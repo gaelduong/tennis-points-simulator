@@ -9,12 +9,10 @@ export const filterAndBuildData = (text) => {
       line[idx] = attr.replace(/\s/g, "");
     });
     // Build data
-    const [shotType, direction, depth, opn_contact_dist] = line;
+    const [direction, depth] = line;
     data.push({
-      shotType,
       direction,
       depth,
-      opn_contact_dist,
     });
   });
   return data;
