@@ -63,4 +63,91 @@ generateFrame() //f2:
 generateFrame():
     draw player (x,y)
     draw opponent(x,y)
+    draw dot(x,y)
     draw shot line(a,b)
+
+
+
+
+Pseudocode:
+
+shots = [
+    {
+        player: 1,
+        shot: bh,
+        direction: right,
+        depth: short
+        opn_contact_dist: normal
+        ...
+    },
+    {
+        player: 2,
+        shot: fh,
+        direction: right,
+        depth: long
+        opn_contact_dist: far
+        ...
+    },
+]
+
+
+// server.js
+
+// ...Receive shots as data from client
+
+let p1Pos = [x1,y1]
+let p2Pos = [x2,y2]
+
+let currentPlayer = 0
+
+const playersPosMap={
+    0: p1Pos,
+    1: p2Pos
+}
+
+const framesData = []
+
+for shot of shots:
+    // Get players
+    currPlayerPos = playersPosMap[currentPlayer]
+    currOponnentPos = playersPosMap[!currentPlayer]
+
+    // Compute relevant data (X=landSpotPos, C=receivingContactPos)
+    landSpotPos = getSpot(shot.direction, shot.depth)
+    receivingContactPos = getReceivingContactPos(currPlayerPos, landSpotPos, shot.opn_contact_dist)
+
+    // Generate 2 frames data
+    framesData.push({currPlayerPos, currOponnentPos, landSpotPos, receivingContactPos})
+    framesData.push(currPlayerPos, receivingContactPos, landSpotPos, receivingContactPos})
+
+    // Update opponent position
+    currOponnentPos = receivingContactPos // (p1Pos or p2Pos)
+    currentPlayer = !currentPlayer
+
+
+// ...Server responds framesData back to client
+
+// client.js
+
+// ... Client receives framesData from server
+
+drawFrame(playerPosition, opponentPosition, landSpot, receivingContactPosition):
+    // draw on div (or canvas)
+    drawPlayer (playerPosition)
+    draw opponent(opponentPosition)
+    draw(landSpot)
+    draw shot line(playerPosition,receivingContactPosition)
+
+
+// index.html
+
+<input Simulate onSubmit=POST(server,{shots})>
+<div background=tennisCourt/>
+<button back onClick='handleDrawFrame'> <button forward onClick='handleDrawFrame'>
+
+
+currFrameId = 0
+handleDrawFrame(k):
+    const {currPlayerPos, currOponnentPos, landSpotPos, receivingContactPos} = frameData[currFrameId]
+    drawFrame(currPlayerPos, currOponnentPos, landSpotPos, receivingContactPos)
+    currFrameId += k
