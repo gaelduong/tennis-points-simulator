@@ -17,46 +17,46 @@ app.post("/simulate", (req, res) => {
   let p1Pos = spotPositions.player1StartPosition;
   let p2Pos = spotPositions.player2StartPosition;
   let currentPlayer = 0;
-  const playerPosMap = {
-    0: p1Pos,
-    1: p2Pos,
-  };
 
   const framesData = [];
 
   shots.forEach((shot) => {
-    // Get players
-    let currPlayerPos = playerPosMap[currentPlayer];
-    let currOponnentPos = playerPosMap[currentPlayer === 0 ? 1 : 0];
-
     // Compute relevant data
     const direction = shot.direction;
     const depth = shot.depth;
     const landSpotPos = [
-      spotPositions.depthY.upSide[depth],
       spotPositions.directionX[direction],
+      currentPlayer === 0
+        ? spotPositions.depthY.upSide[depth]
+        : spotPositions.depthY.downSide[depth],
     ];
     const receivingContactPos = getReceivingContactPos(
-      currPlayerPos,
+      currentPlayer === 0 ? p1Pos : p2Pos,
       landSpotPos
     );
 
     // Generate 2 frames data
     framesData.push({
-      currPlayerPos,
-      currOponnentPos,
-      landSpotPos,
-      receivingContactPos,
-    });
-    framesData.push({
-      currPlayerPos,
-      currOponnentPos: receivingContactPos,
+      hittingPlayer: currentPlayer,
+      player1Pos: p1Pos,
+      player2Pos: p2Pos,
       landSpotPos,
       receivingContactPos,
     });
 
     // Update opponent position
-    currOponnentPos = receivingContactPos; // (update p1Pos or p2Pos)
+    p1Pos = currentPlayer === 0 ? p1Pos : receivingContactPos;
+    p2Pos = currentPlayer === 1 ? p2Pos : receivingContactPos;
+
+    framesData.push({
+      hittingPlayer: currentPlayer,
+      player1Pos: p1Pos,
+      player2Pos: p2Pos,
+      landSpotPos,
+      receivingContactPos,
+    });
+
+    // Switch player turn
     currentPlayer = currentPlayer === 0 ? 1 : 0;
   });
 
@@ -73,7 +73,7 @@ function getReceivingContactPos(currPlayerPos, landSpotPos) {
   const [x0, y0] = currPlayerPos;
   const [x1, y1] = landSpotPos;
   const d = Math.sqrt((x1 - x0) ** 2 + (y1 - y0) ** 2);
-  const dt = 50;
+  const dt = 90 + d;
   const t = dt / d;
 
   return [(1 - t) * x0 + t * x1, (1 - t) * y0 + t * y1];
