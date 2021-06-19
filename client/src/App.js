@@ -1,29 +1,9 @@
 import "./App.css";
 import axios from "axios";
 import { useState } from "react";
+import { filterAndBuildData } from "./Util.js";
 
 const serverUrl = "http://localhost:5000";
-
-const filterAndBuildData = (text) => {
-  const data = [];
-  // Filter
-  let lines = text.split("\n");
-  lines = lines.map((line) => {
-    line = line.split(",");
-    line.forEach((attr, idx) => {
-      line[idx] = attr.replace(/\s/g, "");
-    });
-    // Build data
-    const [shotType, direction, depth, opn_contact_dist] = line;
-    data.push({
-      shotType,
-      direction,
-      depth,
-      opn_contact_dist,
-    });
-  });
-  return data;
-};
 
 function App() {
   const [text, setText] = useState("");
@@ -31,9 +11,21 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const shotsData = filterAndBuildData(text);
-    // console.log(shotsData);
-    const { data } = await axios.post(`${serverUrl}/simulate`, shotsData);
-    // console.log(data);
+    // Need to check if shotsData contains valid attributes
+    console.log(shotsData);
+    try {
+      const { data } = await axios.post(`${serverUrl}/simulate`, shotsData);
+      // console.log(data);
+    } catch (error) {
+      return console.log(error);
+    }
+  };
+
+  const style = {
+    width: "700px",
+    height: "700px",
+    border: "1px solid black",
+    background: "yellow",
   };
 
   return (
@@ -50,6 +42,20 @@ function App() {
         <input type="submit" value="Simulate" />
       </form>
       <div> Tennis court </div>
+      <svg preserveAspectRatio="xMaxYMax none" style={style}>
+        {/* <circle cx={50} cy={50} r={50} /> */}
+        {/* <rect /> */}
+        <path
+          d="M 10 0 V 499 H 150 V 400"
+          stroke="black"
+          stroke-width="10"
+          fill="transparent"
+        />
+      </svg>
+      <div>
+        <button> Back </button>
+        <button> Next </button>
+      </div>
     </div>
   );
 }

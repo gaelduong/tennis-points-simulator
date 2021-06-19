@@ -12,3 +12,7 @@ textarea {
   width: 50%;
   height: 200px;
 }
+
+button {
+  padding: 10px 20px;
+}
