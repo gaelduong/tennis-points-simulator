@@ -21,21 +21,25 @@ function App() {
     setReceivingContactPos([]);
   };
 
-  const handleFrameChange = (e, isForward) => {
-    if (framesData.length === 0) return;
-    if (currentFrameId === 0 && !isForward) return;
-    if (currentFrameId === framesData.length && isForward) {
+  const handleFrameChange = (e, k) => {
+    console.log(k);
+    if (!framesData.length) return;
+    if (currentFrameId === 0 && k === -1) return resetFrame();
+    if (currentFrameId === framesData.length - 1 && k === 1) {
       return resetFrame();
     }
-    const k = isForward ? 1 : -1;
-    setCurrentFrameId((currentFrameId) => currentFrameId + k);
-
-    const currentFrame = framesData[currentFrameId];
-    setHittingPlayer(currentFrame.hittingPlayer);
-    setPlayer1Pos(currentFrame.player1Pos);
-    setPlayer2Pos(currentFrame.player2Pos);
-    setLandSpotPos(currentFrame.landSpotPos);
-    setReceivingContactPos(currentFrame.receivingContactPos);
+    setCurrentFrameId((currentFrameId) => {
+      currentFrameId += k;
+      const currentFrame = framesData[currentFrameId];
+      if (currentFrame) {
+        setHittingPlayer(currentFrame.hittingPlayer);
+        setPlayer1Pos(currentFrame.player1Pos);
+        setPlayer2Pos(currentFrame.player2Pos);
+        setLandSpotPos(currentFrame.landSpotPos);
+        setReceivingContactPos(currentFrame.receivingContactPos);
+      }
+      return currentFrameId;
+    });
   };
 
   const style = {
@@ -50,7 +54,7 @@ function App() {
   };
 
   const landSpotStyle = {
-    fill: "orange",
+    fill: "yellow",
   };
 
   const hittingPlayerPos = hittingPlayer === 0 ? player1Pos : player2Pos;
@@ -105,13 +109,13 @@ function App() {
             <circle
               cx={landSpotPos[0]}
               cy={landSpotPos[1]}
-              r={5}
+              r={3}
               style={landSpotStyle}
             />
           )}
         </svg>
         <div>
-          <button onClick={(e) => handleFrameChange(e, 0)}> Back </button>
+          <button onClick={(e) => handleFrameChange(e, -1)}> Back </button>
           <button onClick={(e) => handleFrameChange(e, 1)}> Next </button>
           {currentFrameId}
         </div>
