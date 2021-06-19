@@ -53,6 +53,11 @@ function App() {
     fill: "black",
   };
 
+  const hittingLineStyle = {
+    stroke: hittingPlayer ? "red" : "blue",
+    strokeWidth: 2,
+  };
+
   const landSpotStyle = {
     fill: "yellow",
   };
@@ -73,10 +78,7 @@ function App() {
                 y1={hittingPlayerPos[1]}
                 x2={landSpotPos[0]}
                 y2={landSpotPos[1]}
-                style={{
-                  stroke: hittingPlayer ? "red" : "blue",
-                  strokeWidth: 2,
-                }}
+                style={hittingLineStyle}
               />
 
               <line
@@ -84,10 +86,7 @@ function App() {
                 y1={landSpotPos[1]}
                 x2={receivingContactPos[0]}
                 y2={receivingContactPos[1]}
-                style={{
-                  stroke: hittingPlayer ? "red" : "blue",
-                  strokeWidth: 2,
-                }}
+                style={hittingLineStyle}
               />
             </g>
           )}
