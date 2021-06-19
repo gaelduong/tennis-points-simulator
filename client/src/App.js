@@ -8,8 +8,11 @@ const serverUrl = "http://localhost:5000";
 
 function App() {
   const [text, setText] = useState("");
-  const [playerPosition, setPlayerPosition] = useState([-10, -10]);
-  const [opponentPosition, setOpponentPosition] = useState([100, 10]);
+  const [hittingPlayer, setHittingPlayer] = useState(-1);
+  const [player1Pos, setPlayer1Pos] = useState([300, 590]);
+  const [player2Pos, setPlayer2Pos] = useState([170, 50]);
+  const [landSpotPos, setLandSpotPos] = useState([-10, -10]);
+  const [receivingContactPos, setReceivingContactPos] = useState([]);
   const [framesData, setFramesData] = useState([]);
   const [currentFrameId, setCurrentFrameId] = useState(0);
 
@@ -22,7 +25,7 @@ function App() {
       const { data } = await axios.post(`${serverUrl}/simulate`, {
         shots: shotsData,
       });
-      // console.log(data);
+      console.log(data);
       setFramesData(data);
     } catch (error) {
       return console.log(error);
@@ -38,21 +41,34 @@ function App() {
     }
     const k = isForward ? 1 : -1;
     setCurrentFrameId((currentFrameId) => currentFrameId + k);
-    setPlayerPosition(framesData[currentFrameId].currPlayerPos);
+    setHittingPlayer(framesData[currentFrameId].hittingPlayer);
+    setPlayer1Pos(framesData[currentFrameId].player1Pos);
+    setPlayer2Pos(framesData[currentFrameId].player2Pos);
+    setLandSpotPos(framesData[currentFrameId].landSpotPos);
+    setReceivingContactPos(framesData[currentFrameId].receivingContactPos);
   };
 
   const style = {
     width: "500px",
     height: "650px",
-    border: "1px solid black",
     background: "#a8d76c",
     // transform: "matrix(1,0, 0, -1 300/2 500/2)",
+  };
+
+  const playerStyle = {
+    fill: "black",
+  };
+
+  const landSpotStyle = {
+    fill: "orange",
   };
 
   const lineStyle = {
     stroke: "red",
     strokeWidth: 2,
   };
+
+  const hittingPlayerPos = hittingPlayer === 0 ? player1Pos : player2Pos;
 
   return (
     <div className="App">
@@ -69,13 +85,53 @@ function App() {
       </form>
       <div>
         <svg style={style}>
-          {/* <circle cx={playerPosition[0]} cy={playerPosition[1]} r={10} /> */}
-          {/* <circle cx={opponentPosition[0]} cy={opponentPosition[1]} r={10} /> */}
           <Court />
-          <circle cx={170} cy={50} r={10} />
-          <circle cx={300} cy={590} r={10} />
 
-          {/* <line x1="0" y1="0" x2="200" y2="200" style={lineStyle} /> */}
+          {currentFrameId > 0 && (
+            <g>
+              <line
+                x1={hittingPlayerPos[0]}
+                y1={hittingPlayerPos[1]}
+                x2={landSpotPos[0]}
+                y2={landSpotPos[1]}
+                style={{
+                  stroke: hittingPlayer ? "red" : "blue",
+                  strokeWidth: 2,
+                }}
+              />
+
+              <line
+                x1={landSpotPos[0]}
+                y1={landSpotPos[1]}
+                x2={receivingContactPos[0]}
+                y2={receivingContactPos[1]}
+                style={{
+                  stroke: hittingPlayer ? "red" : "blue",
+                  strokeWidth: 2,
+                }}
+              />
+            </g>
+          )}
+
+          <circle
+            cx={player1Pos[0]}
+            cy={player1Pos[1]}
+            r={10}
+            style={playerStyle}
+          />
+          <circle
+            cx={player2Pos[0]}
+            cy={player2Pos[1]}
+            r={10}
+            style={playerStyle}
+          />
+
+          <circle
+            cx={landSpotPos[0]}
+            cy={landSpotPos[1]}
+            r={5}
+            style={landSpotStyle}
+          />
         </svg>
         <div>
           <button onClick={(e) => handleFrameChange(e, 0)}> Back </button>
