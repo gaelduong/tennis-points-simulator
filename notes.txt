@@ -1,0 +1,66 @@
+Tennis court: 23.77, 8.23
+
+
+Court:          L     M     R
+                3 2 1 0 1 2 3
+Deep            x x x x x x x
+Somewhat deep   x x x x x x x
+Normal          x x x x x x x
+Somewhat short  x x x x x x x
+Short           x x x x x x x
+Dropshot        x x x x x x x
+
+Receive dist: Far, normal, close (half volley)
+
+Input: csv
+serve, middle, long, receive: normal
+fh, right, normal depth, receive: normal
+fh, a bit  left, short, receive: normal
+bh, bit left,short, receive: normal
+fh, right, deep, receive: normal
+fh, far left, normal, receive: normal
+
+player1 curr pos = [x,y]
+player2 curr pos = [x,y]
+
+shots = [
+    {
+        player: 1,
+        shot: bh,
+        direction: right,
+        depth: short
+        opn_contact_dist: normal
+        ...
+    },
+    {
+        player: 2,
+        shot: fh,
+        direction: right,
+        depth: long
+        opn_contact_dist: far
+        ...
+    },
+]
+
+
+shots[0].direction + shots[0].depth => get the position where the ball landed X
+currContactPos (x,y) + X + opn_contact_dist=> compute contact position [x,y] C 
+
+generateFrame() // start frame
+    currContactPos => draw player dot (black dot)
+
+------
+
+generateFrame() //f1:
+    X => draw landing point (yellow dot)
+    currContactPos + X + opn_contact_dist => draw hitting line (red line)
+
+generateFrame() //f2: 
+    C => draw opponent dot (black dot)
+...then updateOppPos()
+
+
+generateFrame():
+    draw player (x,y)
+    draw opponent(x,y)
+    draw shot line(a,b)
