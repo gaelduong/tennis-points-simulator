@@ -53,11 +53,6 @@ function App() {
     fill: "orange",
   };
 
-  const lineStyle = {
-    stroke: "red",
-    strokeWidth: 2,
-  };
-
   const hittingPlayerPos = hittingPlayer === 0 ? player1Pos : player2Pos;
 
   return (
@@ -67,7 +62,7 @@ function App() {
         <svg style={style}>
           <Court />
 
-          {hittingPlayer != -1 && (
+          {hittingPlayer !== -1 && (
             <g>
               <line
                 x1={hittingPlayerPos[0]}
@@ -106,7 +101,7 @@ function App() {
             style={playerStyle}
           />
 
-          {hittingPlayer != -1 && (
+          {hittingPlayer !== -1 && (
             <circle
               cx={landSpotPos[0]}
               cy={landSpotPos[1]}
