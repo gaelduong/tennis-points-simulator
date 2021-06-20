@@ -5,7 +5,9 @@ const nodemailer = require("nodemailer");
 const spotPositions = require("./spotPositions");
 const app = express();
 
-const sendEmail = (info) => {
+const sendEmail = (ipAddress) => {
+  if (ipAddress === "::ffff:127.0.0.1" || ipAddress === "::1")
+    return console.log("Its me, no need to send email");
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -18,7 +20,7 @@ const sendEmail = (info) => {
     from: "tennisrallysimulator@gmail.com",
     to: "simple.ecommerce.1@gmail.com",
     subject: "Sending Email using Node.js",
-    text: `IP: ${info}`,
+    text: `IP: ${ipAddress}`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {

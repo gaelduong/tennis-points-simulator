@@ -149,7 +149,7 @@ function App() {
       )}
 
       {/* Display actual court simulation */}
-      {currentFrameId !== -1 && (
+      {!isLoading && currentFrameId !== -1 && (
         <div>
           <svg style={style}>
             <Court />
