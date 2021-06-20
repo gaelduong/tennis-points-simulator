@@ -2,8 +2,11 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import Court from "./Court.js";
 import ShotsInputForm from "./ShotsInputForm.js";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 function App() {
+  const [isLoading, setLoading] = useState(false);
   const [hittingPlayer, setHittingPlayer] = useState(-1);
   const [shotTypeData, setShotTypeData] = useState("");
   const [player1Pos, setPlayer1Pos] = useState([300, 590]);
@@ -90,44 +93,58 @@ function App() {
 
   return (
     <div className="App">
-      <ShotsInputForm setFramesData={setFramesData} resetFrame={resetFrame} />
+      <ShotsInputForm
+        setLoading={setLoading}
+        setFramesData={setFramesData}
+        resetFrame={resetFrame}
+      />
       {/* Display dummy court with instructions */}
-      {currentFrameId === -1 && (
-        <svg style={style}>
-          <Court />
-          {/* 2 players */}
-          <circle
-            cx={player1Pos[0]}
-            cy={player1Pos[1]}
-            r={10}
-            style={playerStyle}
-          />
-          <circle
-            cx={player2Pos[0]}
-            cy={player2Pos[1]}
-            r={10}
-            style={playerStyle}
-          />
-          <text x={280} y={620}>
-            Player 1
-          </text>
-          <text x={140} y={30}>
-            Player 2
-          </text>
-          <text x={10} y={330}>
-            LEFT
-          </text>
-          <text x={440} y={330}>
-            RIGHT
-          </text>
+      {isLoading ||
+        (currentFrameId === -1 && (
+          <svg style={style}>
+            <Court />
+            {/* 2 players */}
+            <circle
+              cx={player1Pos[0]}
+              cy={player1Pos[1]}
+              r={10}
+              style={playerStyle}
+            />
+            <circle
+              cx={player2Pos[0]}
+              cy={player2Pos[1]}
+              r={10}
+              style={playerStyle}
+            />
+            <text x={280} y={620}>
+              Player 1
+            </text>
+            <text x={140} y={30}>
+              Player 2
+            </text>
+            <text x={10} y={330}>
+              LEFT
+            </text>
+            <text x={440} y={330}>
+              RIGHT
+            </text>
 
-          <text x={230} y={560}>
-            DEEP
-          </text>
-          <text x={230} y={100}>
-            DEEP
-          </text>
-        </svg>
+            <text x={230} y={560}>
+              DEEP
+            </text>
+            <text x={230} y={100}>
+              DEEP
+            </text>
+          </svg>
+        ))}
+
+      {isLoading && (
+        <div id="loader-container">
+          <div>
+            <Loader type="TailSpin" color="#00BFFF" height={100} width={100} />
+            <div> Loading simulation...</div>
+          </div>
+        </div>
       )}
 
       {/* Display actual court simulation */}
