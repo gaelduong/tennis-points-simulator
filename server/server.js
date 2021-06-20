@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const nodemailer = require("nodemailer");
 const spotPositions = require("./spotPositions");
 const app = express();
@@ -31,10 +32,6 @@ const sendEmail = (info) => {
 
 app.use(express.json());
 app.use(cors());
-
-app.get("/", (req, res) => {
-  res.json("API running");
-});
 
 app.post("/simulate", (req, res) => {
   const { shots } = req.body;
@@ -128,6 +125,17 @@ app.post("/simulate", (req, res) => {
 
   res.json(framesData);
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/build")));
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.json("API running");
+  });
+}
 
 app.listen(5000, () => console.log("Server listening on port 5000"));
 
