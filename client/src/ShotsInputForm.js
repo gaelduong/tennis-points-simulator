@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import { filterAndBuildData } from "./Util.js";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { MdContentCopy } from "react-icons/md";
-
-const serverUrl = "http://localhost:5000";
 
 const ShotsInputForm = ({ setFramesData, resetFrame }) => {
   const [text, setText] = useState("");
@@ -31,7 +28,7 @@ const ShotsInputForm = ({ setFramesData, resetFrame }) => {
     // Need to check if shotsData contains valid attributes
     if (!shotsData) return setSubmitMessage("Wrong input! Check again.");
     try {
-      const { data } = await axios.post(`${serverUrl}/simulate`, {
+      const { data } = await axios.post("/simulate", {
         shots: shotsData,
       });
       setFramesData(data);
