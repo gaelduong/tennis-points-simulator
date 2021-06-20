@@ -137,7 +137,9 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(5000, () => console.log("Server listening on port 5000"));
+app.listen(process.env.PORT || 5000, () =>
+  console.log("Server listening on port 5000")
+);
 
 // t=dt/d
 // (xt,yt)=(((1−t)x0+tx1),((1−t)y0+ty1))
