@@ -32,7 +32,7 @@ app.post("/simulate", (req, res) => {
     },
   ];
 
-  shots.forEach((shot) => {
+  shots.forEach((shot, idx) => {
     // Compute relevant data
     const direction = shot.direction;
     const depth = shot.depth;
@@ -42,10 +42,13 @@ app.post("/simulate", (req, res) => {
         ? spotPositions.depthY.upSide[depth]
         : spotPositions.depthY.downSide[depth],
     ];
+
+    const isLastShot = idx === shots.length - 1;
+
     const receivingContactPos = getReceivingContactPos(
       currentPlayer === 0 ? p1Pos : p2Pos,
       landSpotPos,
-      depth === "deep" ? 70 : 100
+      isLastShot ? 150 : depth === "deep" ? 70 : 100
     );
 
     // Generate 2 frames data
@@ -66,27 +69,29 @@ app.post("/simulate", (req, res) => {
       receivingContactPos,
     });
 
-    const playerReceivePosition = getReceivingContactPos(
-      landSpotPos,
-      receivingContactPos,
-      15
-    );
+    if (!isLastShot) {
+      const playerReceivePosition = getReceivingContactPos(
+        landSpotPos,
+        receivingContactPos,
+        15
+      );
 
-    // Update opponent position
-    p1Pos = currentPlayer === 0 ? p1Pos : playerReceivePosition;
-    p2Pos = currentPlayer === 1 ? p2Pos : playerReceivePosition;
+      // Update opponent position
+      p1Pos = currentPlayer === 0 ? p1Pos : playerReceivePosition;
+      p2Pos = currentPlayer === 1 ? p2Pos : playerReceivePosition;
 
-    framesData.push({
-      hittingPlayer: currentPlayer,
-      shotTypeData: {
-        type: shot.shotType,
-        textPos,
-      },
-      player1Pos: p1Pos,
-      player2Pos: p2Pos,
-      landSpotPos,
-      receivingContactPos,
-    });
+      framesData.push({
+        hittingPlayer: currentPlayer,
+        shotTypeData: {
+          type: shot.shotType,
+          textPos,
+        },
+        player1Pos: p1Pos,
+        player2Pos: p2Pos,
+        landSpotPos,
+        receivingContactPos,
+      });
+    }
 
     // Switch player turn
     currentPlayer = currentPlayer === 0 ? 1 : 0;
