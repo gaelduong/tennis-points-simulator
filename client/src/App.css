@@ -40,7 +40,7 @@ button:active {
 }
 
 .code-snippet {
-  width: 270px;
+  width: 290px;
   background: #bbddff;
   /* color: #ffffff; */
   padding: 1rem 1.2rem 1rem 0;
@@ -51,6 +51,7 @@ button:active {
 .code-section {
   position: relative;
   text-align: left;
+  margin: 0 20px;
   /* width: 100%; */
 }
 
@@ -60,7 +61,7 @@ button:active {
 
 .code-section span {
   position: absolute;
-  right: 0;
+  right: -20px;
   top: -20%;
   bottom: 0;
   font-size: 13px;

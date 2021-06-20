@@ -8,12 +8,12 @@ const ShotsInputForm = ({ setLoading, setFramesData, resetFrame }) => {
   const [isCopied, setIsCopied] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
 
-  const codeSnippet = `  slice, farRight, deep
-  topspin, left, normal
-  slice, farRight, deep
-  slice, farLeft, veryShort
-  neutral, farRight, veryShort
-  slice, farRight, deep`;
+  const codeSnippet = `slice, farRight, deep
+topspin, left, normal
+slice, farRight, deep
+slice, farLeft, veryShort
+neutral, farRight, veryShort
+slice, farRight, deep`;
 
   const onCopyText = () => {
     setIsCopied(true);
