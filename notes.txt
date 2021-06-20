@@ -1,14 +1,14 @@
 Tennis court: 23.77, 8.23
 
 
-Court:          L     M     R
-                3 2 1 0 1 2 3
-Deep            x x x x x x x
-Somewhat deep   x x x x x x x
-Normal          x x x x x x x
-Somewhat short  x x x x x x x
-Short           x x x x x x x
-Dropshot        x x x x x x x
+Court:          L   M   R
+                2 1 0 1 2 
+Deep            x x x x x
+Somewhat deep   x x x x x
+Normal          x x x x x
+Somewhat short  x x x x x
+Short           x x x x x
+Dropshot        x x x x x
 
 Receive dist: Far, normal, close (half volley)
 
@@ -151,3 +151,25 @@ handleDrawFrame(k):
     const {currPlayerPos, currOponnentPos, landSpotPos, receivingContactPos} = frameData[currFrameId]
     drawFrame(currPlayerPos, currOponnentPos, landSpotPos, receivingContactPos)
     currFrameId += k
+
+
+
+Todos:
+- Final test
+- [x] Winner [ ] Net/[ ] Long
+- [x] Handle wrong input
+- [x]style buttons
+- deploy
+- [x] display shot type (topspin, slice,...)
+- [x] add instrunctions
+- [x] bug in increment at start
+- animation for line + recovering
+- dist between opn and landing spot
+- recover (after hit shot)
+
+
+framesData?
+    show frames 
+    show next, back
+
+: show instruction frame 
