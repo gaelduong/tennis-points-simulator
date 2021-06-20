@@ -10,7 +10,7 @@ const spotPositions = {
   },
   depthY: {
     upSide: {
-      dropshot: 270,
+      veryShort: 270,
       short: 220,
       somewhatShort: 180,
       normal: 150,
@@ -18,7 +18,7 @@ const spotPositions = {
       deep: 90,
     },
     downSide: {
-      dropshot: 380,
+      veryShort: 380,
       short: 430,
       somewhatShort: 470,
       normal: 500,

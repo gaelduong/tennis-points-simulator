@@ -47,7 +47,6 @@ function App() {
       currentFrameId =
         currentFrameId + k >= framesData.length ? 0 : currentFrameId + k;
       const currentFrame = framesData[currentFrameId];
-      console.log(currentFrameId);
       if (currentFrame) {
         setHittingPlayer(currentFrame.hittingPlayer);
         setShotTypeData(currentFrame.shotTypeData);
@@ -82,8 +81,9 @@ function App() {
   };
 
   const ballStyle = {
-    fill: "yellow",
+    fill: "#f5fc8d",
     stroke: "black",
+    strokeWidth: 2,
   };
 
   const hittingPlayerPos = hittingPlayer === 0 ? player1Pos : player2Pos;
@@ -108,6 +108,12 @@ function App() {
             r={10}
             style={playerStyle}
           />
+          <text x={280} y={620}>
+            Player 1
+          </text>
+          <text x={140} y={30}>
+            Player 2
+          </text>
           <text x={10} y={330}>
             LEFT
           </text>
@@ -120,12 +126,6 @@ function App() {
           </text>
           <text x={230} y={100}>
             DEEP
-          </text>
-          <text x={280} y={620}>
-            Player 1
-          </text>
-          <text x={140} y={30}>
-            Player 2
           </text>
         </svg>
       )}
@@ -190,8 +190,18 @@ function App() {
 
           <div>
             <div>
-              <button onClick={(e) => handleFrameChange(e, -1)}> Back </button>
-              <button onClick={(e) => handleFrameChange(e, 1)}> Next </button>
+              <button
+                className="action-btn control-btn"
+                onClick={(e) => handleFrameChange(e, -1)}
+              >
+                Back
+              </button>
+              <button
+                className="action-btn control-btn"
+                onClick={(e) => handleFrameChange(e, 1)}
+              >
+                Next
+              </button>
             </div>
             <div>
               {currentFrameId + 1} / {framesData.length}

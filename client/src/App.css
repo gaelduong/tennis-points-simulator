@@ -27,6 +27,10 @@ button {
   padding: 2px 20px;
 }
 
+button:active {
+  transform: translateY(2px);
+}
+
 .container {
   display: flex;
   /* justify-content: center; */
@@ -59,14 +63,26 @@ button {
   right: 0;
   top: -20%;
   bottom: 0;
-  /* font-size: 120%; */
+  font-size: 13px;
+}
+
+#copy-btn {
+  font-size: 13px;
+  background: rgb(252, 252, 252);
+  padding: 3px 5px 3px 0;
+  border-radius: 5px;
+  box-shadow: 2px 2px rgb(151, 146, 146);
+  margin: 0;
+}
+#copy-btn:hover {
+  cursor: pointer;
 }
 
 #input-instructions {
   padding: 20px;
   border-radius: 7px;
   font-size: 13px;
-  background-color: rgb(139, 224, 136);
+  background-color: rgb(164, 240, 162, 0.3);
   /* color: white; */
   box-shadow: 3px 3px rgb(221, 211, 209);
 }
@@ -74,4 +90,31 @@ button {
 #submit-message {
   font-size: 14px;
   color: rgb(231, 59, 59);
+}
+
+.action-btn {
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 1.5px 1.5px rgb(73, 72, 72);
+  margin: 0 5px;
+}
+
+#simulate-btn {
+  padding: 7px 10px;
+  font-size: 14px;
+  /* font-weight: 700; */
+  color: rgb(255, 255, 255);
+  background: rgb(60, 107, 196);
+}
+
+#reset-btn {
+  color: rgb(248, 240, 240);
+  background: rgb(231, 91, 67);
+}
+
+.control-btn {
+  background: rgb(60, 107, 196);
+  color: white;
 }

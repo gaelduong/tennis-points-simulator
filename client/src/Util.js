@@ -14,7 +14,7 @@ const depths = [
   "normal",
   "somewhatShort",
   "short",
-  "dropshot",
+  "veryShort",
 ];
 
 export const filterAndBuildData = (text) => {
