@@ -9,6 +9,7 @@ const serverUrl = "http://localhost:5000";
 const ShotsInputForm = ({ setFramesData, resetFrame }) => {
   const [text, setText] = useState("");
   const [isCopied, setIsCopied] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState("");
 
   const codeSnippet = `  slice, farRight, deep
   topspin, left, normal
@@ -29,11 +30,13 @@ const ShotsInputForm = ({ setFramesData, resetFrame }) => {
     const shotsData = filterAndBuildData(text);
     // Need to check if shotsData contains valid attributes
     console.log(shotsData);
+    if (!shotsData) return setSubmitMessage("Wrong input! Check again.");
     try {
       const { data } = await axios.post(`${serverUrl}/simulate`, {
         shots: shotsData,
       });
       setFramesData(data);
+      setSubmitMessage("");
     } catch (error) {
       return console.log(error);
     }
@@ -89,6 +92,7 @@ const ShotsInputForm = ({ setFramesData, resetFrame }) => {
           value={text}
           onChange={(e) => setText(e.target.value)}
         ></textarea>
+        {submitMessage && <div id="submit-message"> {submitMessage} </div>}
         <button onClick={handleSubmit}> Simulate point! </button>
         <button
           type="button"
