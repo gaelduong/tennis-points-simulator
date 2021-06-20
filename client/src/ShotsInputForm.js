@@ -24,10 +24,10 @@ const ShotsInputForm = ({ setLoading, setFramesData, resetFrame }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     const shotsData = filterAndBuildData(text);
     // Need to check if shotsData contains valid attributes
     if (!shotsData) return setSubmitMessage("Wrong input! Check again.");
+    setLoading(true);
     try {
       const { data } = await axios.post("/simulate", {
         shots: shotsData,

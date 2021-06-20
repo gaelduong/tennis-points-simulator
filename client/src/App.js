@@ -38,6 +38,7 @@ function App() {
     setPlayer2Pos([170, 50]);
     setLandSpotPos([]);
     setReceivingContactPos([]);
+    setLoading(false);
   };
 
   const handleFrameChange = (e, k) => {
