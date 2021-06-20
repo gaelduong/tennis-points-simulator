@@ -18,7 +18,19 @@ app.post("/simulate", (req, res) => {
   let p2Pos = spotPositions.player2StartPosition;
   let currentPlayer = 0;
 
-  const framesData = [];
+  const framesData = [
+    {
+      hittingPlayer: -1,
+      shotTypeData: {
+        type: null,
+        textPos: null,
+      },
+      player1Pos: p1Pos,
+      player2Pos: p2Pos,
+      landSpotPos: null,
+      receivingContactPos: null,
+    },
+  ];
 
   shots.forEach((shot) => {
     // Compute relevant data
