@@ -9,8 +9,9 @@ export const filterAndBuildData = (text) => {
       line[idx] = attr.replace(/\s/g, "");
     });
     // Build data
-    const [direction, depth] = line;
+    const [shotType, direction, depth] = line;
     data.push({
+      shotType,
       direction,
       depth,
     });

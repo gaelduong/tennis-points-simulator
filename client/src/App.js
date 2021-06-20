@@ -5,6 +5,7 @@ import ShotsInputForm from "./ShotsInputForm.js";
 
 function App() {
   const [hittingPlayer, setHittingPlayer] = useState(-1);
+  const [shotTypeData, setShotTypeData] = useState("");
   const [player1Pos, setPlayer1Pos] = useState([300, 590]);
   const [player2Pos, setPlayer2Pos] = useState([170, 50]);
   const [landSpotPos, setLandSpotPos] = useState([]);
@@ -22,7 +23,6 @@ function App() {
   };
 
   const handleFrameChange = (e, k) => {
-    console.log(k);
     if (!framesData.length) return;
     if (currentFrameId === 0 && k === -1) return resetFrame();
     if (currentFrameId === framesData.length - 1 && k === 1) {
@@ -33,6 +33,7 @@ function App() {
       const currentFrame = framesData[currentFrameId];
       if (currentFrame) {
         setHittingPlayer(currentFrame.hittingPlayer);
+        setShotTypeData(currentFrame.shotTypeData);
         setPlayer1Pos(currentFrame.player1Pos);
         setPlayer2Pos(currentFrame.player2Pos);
         setLandSpotPos(currentFrame.landSpotPos);
@@ -59,7 +60,13 @@ function App() {
   };
 
   const landSpotStyle = {
+    fill: "black",
+    opacity: "40%",
+  };
+
+  const ballStyle = {
     fill: "yellow",
+    stroke: "black",
   };
 
   const hittingPlayerPos = hittingPlayer === 0 ? player1Pos : player2Pos;
@@ -88,6 +95,9 @@ function App() {
                 y2={receivingContactPos[1]}
                 style={hittingLineStyle}
               />
+              <text x={shotTypeData.textPos[0]} y={shotTypeData.textPos[1]}>
+                {shotTypeData.type}
+              </text>
             </g>
           )}
 
@@ -105,18 +115,31 @@ function App() {
           />
 
           {hittingPlayer !== -1 && (
-            <circle
-              cx={landSpotPos[0]}
-              cy={landSpotPos[1]}
-              r={3}
-              style={landSpotStyle}
-            />
+            <g>
+              <circle
+                cx={landSpotPos[0]}
+                cy={landSpotPos[1]}
+                r={3}
+                style={landSpotStyle}
+              />
+              <circle
+                cx={receivingContactPos[0]}
+                cy={receivingContactPos[1]}
+                r={5}
+                style={ballStyle}
+              />
+            </g>
           )}
         </svg>
+
         <div>
-          <button onClick={(e) => handleFrameChange(e, -1)}> Back </button>
-          <button onClick={(e) => handleFrameChange(e, 1)}> Next </button>
-          {currentFrameId}
+          <div>
+            <button onClick={(e) => handleFrameChange(e, -1)}> Back </button>
+            <button onClick={(e) => handleFrameChange(e, 1)}> Next </button>
+          </div>
+          <div>
+            {currentFrameId + 1} / {framesData.length}
+          </div>
         </div>
       </div>
     </div>

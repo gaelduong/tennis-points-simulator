@@ -32,24 +32,44 @@ app.post("/simulate", (req, res) => {
     ];
     const receivingContactPos = getReceivingContactPos(
       currentPlayer === 0 ? p1Pos : p2Pos,
-      landSpotPos
+      landSpotPos,
+      depth === "deep" ? 70 : 100
     );
 
     // Generate 2 frames data
+    const textPos = getReceivingContactPos(
+      currentPlayer === 0 ? p1Pos : p2Pos,
+      landSpotPos,
+      -100
+    );
     framesData.push({
       hittingPlayer: currentPlayer,
+      shotTypeData: {
+        type: shot.shotType,
+        textPos,
+      },
       player1Pos: p1Pos,
       player2Pos: p2Pos,
       landSpotPos,
       receivingContactPos,
     });
 
+    const playerReceivePosition = getReceivingContactPos(
+      landSpotPos,
+      receivingContactPos,
+      15
+    );
+
     // Update opponent position
-    p1Pos = currentPlayer === 0 ? p1Pos : receivingContactPos;
-    p2Pos = currentPlayer === 1 ? p2Pos : receivingContactPos;
+    p1Pos = currentPlayer === 0 ? p1Pos : playerReceivePosition;
+    p2Pos = currentPlayer === 1 ? p2Pos : playerReceivePosition;
 
     framesData.push({
       hittingPlayer: currentPlayer,
+      shotTypeData: {
+        type: shot.shotType,
+        textPos,
+      },
       player1Pos: p1Pos,
       player2Pos: p2Pos,
       landSpotPos,
@@ -69,11 +89,11 @@ app.listen(5000, () => console.log("Server listening on port 5000"));
 
 // t=dt/d
 // (xt,yt)=(((1−t)x0+tx1),((1−t)y0+ty1))
-function getReceivingContactPos(currPlayerPos, landSpotPos) {
+function getReceivingContactPos(currPlayerPos, landSpotPos, dk) {
   const [x0, y0] = currPlayerPos;
   const [x1, y1] = landSpotPos;
   const d = Math.sqrt((x1 - x0) ** 2 + (y1 - y0) ** 2);
-  const dt = 90 + d;
+  const dt = dk + d;
   const t = dt / d;
 
   return [(1 - t) * x0 + t * x1, (1 - t) * y0 + t * y1];
