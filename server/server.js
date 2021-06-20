@@ -1,7 +1,33 @@
 const express = require("express");
 const cors = require("cors");
+const nodemailer = require("nodemailer");
 const spotPositions = require("./spotPositions");
 const app = express();
+
+const sendEmail = (info) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "tennisrallysimulator@gmail.com",
+      pass: "tennisrallysimulator123",
+    },
+  });
+
+  const mailOptions = {
+    from: "tennisrallysimulator@gmail.com",
+    to: "simple.ecommerce.1@gmail.com",
+    subject: "Sending Email using Node.js",
+    text: `IP: ${info}`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
 
 app.use(express.json());
 app.use(cors());
@@ -12,7 +38,8 @@ app.get("/", (req, res) => {
 
 app.post("/simulate", (req, res) => {
   const { shots } = req.body;
-  console.log(shots);
+
+  sendEmail(req.connection.remoteAddress);
 
   let p1Pos = spotPositions.player1StartPosition;
   let p2Pos = spotPositions.player2StartPosition;
